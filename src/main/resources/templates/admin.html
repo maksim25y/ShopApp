@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin page</title>
+</head>
+<body>
+    <h1>Admin page</h1>
+    <ul th:each="person: ${people}" class="list-group mb-2">
+        <li class="list-group-item" aria-current="true">
+            <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${person.getUsername()+' , '+person.getYearOfBirth()}" th:href="@{/people/{id}(id=${person.getId()})}">User</a>
+        </li>
+    </ul>
+    <a href="/people/new">
+        <button type="button" class="btn btn-success">Добавить пользователя</button>
+    </a>
+</body>
+</html>
