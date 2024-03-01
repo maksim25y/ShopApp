@@ -33,7 +33,7 @@ public class MainController {
     @GetMapping("/admin")
     public String adminPage(Model model) {
         adminService.doAdminStuff();
-        model.addAttribute("people",peopleService.getAll());
+        model.addAttribute("people",peopleService.findAllByIdAndRole("ROLE_USER"));
         return "views/other/admin";
     }
 }

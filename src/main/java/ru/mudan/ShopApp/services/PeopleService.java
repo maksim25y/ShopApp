@@ -14,7 +14,11 @@ public class PeopleService {
     public PeopleService(PeopleRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
     }
-    public List<Person> getAll(){
-        return peopleRepository.findAll();
+
+    public void deleteById(int id) {
+        peopleRepository.deleteById(id);
+    }
+    public List<Person> findAllByIdAndRole(String role) {
+        return peopleRepository.findByRole(role);
     }
 }

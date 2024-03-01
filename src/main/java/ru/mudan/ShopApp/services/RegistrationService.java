@@ -7,9 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.repositories.PeopleRepository;
 
-/**
- * @author Neil Alishev
- */
 @Service
 public class RegistrationService {
 
