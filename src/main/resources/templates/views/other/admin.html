@@ -11,8 +11,14 @@
             <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${person.getUsername()+' , '+person.getYearOfBirth()}" th:href="@{/people/{id}(id=${person.getId()})}">User</a>
         </li>
     </ul>
-    <a href="/people/new">
-        <button type="button" class="btn btn-success">Добавить пользователя</button>
-    </a>
+    <div>
+        <a href="/people/new">
+            <button type="button" class="btn btn-success">Добавить пользователя</button>
+        </a>
+    </div>
+    <br>
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Выйти" />
+    </form>
 </body>
 </html>

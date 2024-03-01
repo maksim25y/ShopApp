@@ -32,12 +32,12 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "auth/login";
+        return "views/auth/login";
     }
 
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("person") Person person) {
-        return "auth/registration";
+        return "views/auth/registration";
     }
 
     @PostMapping("/registration")
@@ -46,7 +46,7 @@ public class AuthController {
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "/auth/registration";
+            return "views/auth/registration";
 
         registrationService.register(person);
 

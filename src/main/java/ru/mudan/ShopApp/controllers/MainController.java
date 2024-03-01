@@ -1,6 +1,5 @@
 package ru.mudan.ShopApp.controllers;
 
-import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,34 +11,29 @@ import ru.mudan.ShopApp.services.AdminService;
 import ru.mudan.ShopApp.services.PeopleService;
 
 @Controller
-public class HelloController {
+public class MainController {
     private final AdminService adminService;
     private final PeopleService peopleService;
 
     @Autowired
-    public HelloController(AdminService adminService, PeopleService peopleService) {
+    public MainController(AdminService adminService, PeopleService peopleService) {
         this.adminService = adminService;
         this.peopleService = peopleService;
     }
 
-    @GetMapping("/hello")
-    public String sayHello() {
-        return "hello";
-    }
-
-    @GetMapping("/showUserInfo")
-    public String showUserInfo() {
+    @GetMapping
+    public String showUserInfo(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        System.out.println(personDetails.getPerson());
+        model.addAttribute("role",personDetails.getPerson().getRole());
 
-        return "hello";
+        return "views/index";
     }
 
     @GetMapping("/admin")
     public String adminPage(Model model) {
         adminService.doAdminStuff();
         model.addAttribute("people",peopleService.getAll());
-        return "admin";
+        return "views/other/admin";
     }
 }
