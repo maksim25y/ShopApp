@@ -1,11 +1,13 @@
 package ru.mudan.ShopApp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.services.PeopleService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/people")
@@ -14,6 +16,11 @@ public class PeopleController {
     @Autowired
     public PeopleController(PeopleService peopleService) {
         this.peopleService = peopleService;
+    }
+    @PostMapping
+    public String addUser(@ModelAttribute("person")@Valid Person person){
+        peopleService.addPerson(person);
+        return "redirect:/";
     }
 
     @DeleteMapping("/{id}")

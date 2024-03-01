@@ -21,4 +21,8 @@ public class PeopleService {
     public List<Person> findAllByIdAndRole(String role) {
         return peopleRepository.findByRole(role);
     }
+
+    public void addPerson(Person person) {
+        peopleRepository.save(person);
+    }
 }
