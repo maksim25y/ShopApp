@@ -6,9 +6,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.security.PersonDetails;
 import ru.mudan.ShopApp.services.AdminService;
 import ru.mudan.ShopApp.services.PeopleService;
+import ru.mudan.ShopApp.util.AuthContext;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class MainController {
@@ -22,15 +28,12 @@ public class MainController {
     }
 
     @GetMapping
-    public String showUserInfo(Model model) {
-        PersonDetails personDetails = null;
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            personDetails = (PersonDetails) authentication.getPrincipal();
-            if(personDetails!=null){
-                model.addAttribute("person",personDetails.getPerson());
+    public String showUserInfo(Model model, HttpServletRequest httpServletRequest) {
+        PersonDetails person = AuthContext.getPersonDetailsFromContext();
+        if(person!=null){
+            if(peopleService.checkIsPeeson(person.getPerson().getId())){
+                model.addAttribute("person",person.getPerson());
             }
-        } catch (Exception ignored) {
         }
         return "views/index";
     }

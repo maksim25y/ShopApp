@@ -7,6 +7,10 @@ import ru.mudan.ShopApp.security.PersonDetails;
 public class AuthContext {
     public static PersonDetails getPersonDetailsFromContext(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (PersonDetails) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
+        if(principal.equals("anonymousUser")){
+            return null;
+        }
+        return (PersonDetails) principal;
     }
 }

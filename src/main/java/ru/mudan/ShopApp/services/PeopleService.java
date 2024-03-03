@@ -30,4 +30,12 @@ public class PeopleService {
     public Optional<Person> findById(int id) {
         return peopleRepository.findById(id);
     }
+
+    public void editPerson(Person person) {
+        peopleRepository.save(person);
+    }
+
+    public boolean checkIsPeeson(int id) {
+        return !peopleRepository.findById(id).isEmpty();
+    }
 }
