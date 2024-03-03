@@ -6,6 +6,7 @@ import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.repositories.PeopleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PeopleService {
@@ -24,5 +25,9 @@ public class PeopleService {
 
     public void addPerson(Person person) {
         peopleRepository.save(person);
+    }
+
+    public Optional<Person> findById(int id) {
+        return peopleRepository.findById(id);
     }
 }

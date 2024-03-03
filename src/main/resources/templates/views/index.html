@@ -6,8 +6,10 @@
 </head>
 <body>
     <h1>Главная</h1>
-    <div th:if="${role=='ROLE_ADMIN'}">
-        <a href="admin">Админка</a>
+    <div th:if="${person}">
+        <a th:href="@{/people/{id}(id=${person.getId()})}">
+            <button>Редактировать профиль</button>
+        </a>
     </div>
 </body>
 </html>

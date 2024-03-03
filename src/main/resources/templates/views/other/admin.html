@@ -10,7 +10,7 @@
         <ul th:each="person: ${people}" class="list-group mb-2">
             <li class="list-group-item" aria-current="true">
                 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
-                    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${person.getUsername()+' , '+person.getYearOfBirth()}" th:href="@{/people/{id}(id=${person.getId()})}">User</a>
+                    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${person.getUsername()+' , '+person.getYearOfBirth()}" th:href="@{/people/admin/{id}(id=${person.getId()})}">User</a>
                     <button type="submit">Удалить</button>
                 </form>
             </li>

@@ -23,16 +23,20 @@ public class MainController {
 
     @GetMapping
     public String showUserInfo(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        model.addAttribute("role",personDetails.getPerson().getRole());
-
+        PersonDetails personDetails = null;
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            personDetails = (PersonDetails) authentication.getPrincipal();
+            if(personDetails!=null){
+                model.addAttribute("person",personDetails.getPerson());
+            }
+        } catch (Exception ignored) {
+        }
         return "views/index";
     }
 
     @GetMapping("/admin")
     public String adminPage(Model model) {
-        adminService.doAdminStuff();
         model.addAttribute("people",peopleService.findAllByIdAndRole("ROLE_USER"));
         return "views/other/admin";
     }
