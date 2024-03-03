@@ -2,6 +2,7 @@ package ru.mudan.ShopApp.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,12 @@ public class PeopleController {
     }
     @GetMapping("/{id}")
     public String getPerson(@PathVariable("id")int id, Model model){
-        model.addAttribute("person",AuthContext.getPersonDetailsFromContext().getPerson());
-
+        Person person = AuthContext.getPersonDetailsFromContext().getPerson();
+        if(id==person.getId()){
+            model.addAttribute("person",person);
+        }else {
+            return "error";
+        }
         return "views/people/show";
     }
     @GetMapping("/{id}/edit")
@@ -42,6 +47,7 @@ public class PeopleController {
         return "views/people/show";
     }
     @GetMapping("/admin/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String userInfoFromAdmin(Model model, @PathVariable("id")int id) {
         model.addAttribute("person",peopleService.findById(id).get());
         return "views/other/user";
