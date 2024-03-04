@@ -9,17 +9,17 @@
     <form th:action="@{/people/{id}/edit(id=${person.getId()})}" th:method="PATCH" th:object="${person}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <label for="username">Введите имя пользователя: </label>
-        <input type="text" th:field="*{username}" id="username"/>
+        <input type="text" th:field="*{username}" id="username" required/>
         <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Year of birth Error
         </div>
         <br/>
         <label for="yearOfBirth">Введите год рождения пользователя: </label>
-        <input type="number" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+        <input type="number" th:field="*{yearOfBirth}" id="yearOfBirth" required/>
         <div style="color:red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year of birth Error
         </div>
         <br/>
         <label for="password">Введите пароль пользователю: </label>
-        <input type="password" th:field="*{password}" id="password"/>
+        <input type="password" th:field="*{password}" id="password" required/>
         <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error
         </div>
         <br/>

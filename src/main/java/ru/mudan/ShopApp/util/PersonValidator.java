@@ -41,5 +41,8 @@ public class PersonValidator implements Validator {
         if(person1.get().getId()!=person.getId()){
             errors.rejectValue("username", "", "Человек с таким именем пользователя уже существует");
         }
+        if(person.getPassword().length()<4||person.getPassword().length()>20){
+            errors.rejectValue("password", "", "Некорректный размер пароля");
+        }
     }
 }
