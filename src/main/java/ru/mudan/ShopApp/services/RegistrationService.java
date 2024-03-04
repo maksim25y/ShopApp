@@ -25,4 +25,14 @@ public class RegistrationService {
         person.setRole("ROLE_USER");
         peopleRepository.save(person);
     }
+    @Transactional
+    public void register(Person person,boolean admin) {
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
+        if(admin){
+            person.setRole("ROLE_ADMIN");
+        }else{
+            person.setRole("ROLE_USER");
+        }
+        peopleRepository.save(person);
+    }
 }

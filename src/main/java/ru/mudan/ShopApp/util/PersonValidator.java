@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.mudan.ShopApp.models.Person;
-import ru.mudan.ShopApp.security.PersonDetails;
 import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.services.PersonDetailsService;
 

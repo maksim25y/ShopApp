@@ -18,6 +18,7 @@ import ru.mudan.ShopApp.security.PersonDetails;
 import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.services.RegistrationService;
 import ru.mudan.ShopApp.services.SessionService;
+import ru.mudan.ShopApp.util.AuthContext;
 import ru.mudan.ShopApp.util.PersonValidator;
 
 import javax.validation.Valid;
@@ -50,30 +51,54 @@ public class PeopleController {
     //Получение информации о пользователе со стороны пользователя
     @GetMapping("/{id}")
     public String getPerson(@PathVariable("id")int id, Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Person> person = peopleService.findById(id);
-        if(person.isEmpty()){
-            return "error";
-        }else {
-            if(person.get().getId()==id){
-                PersonDetails newPrincipal = new PersonDetails(person.get());
-                UsernamePasswordAuthenticationToken newAuthentication = new UsernamePasswordAuthenticationToken(newPrincipal, authentication.getCredentials(), authentication.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+        PersonDetails personDetails = AuthContext.getPersonDetailsFromContext();
+        if(personDetails!=null){
+            if(personDetails.getPerson().getId()==id){
+                Optional<Person> person = peopleService.findById(id);
+                if(person.isEmpty())return "error";
                 model.addAttribute("person",person.get());
             }else {
                 return "error";
             }
+        }else{
+            return "error";
         }
         return "views/people/show";
     }
     //Редактирование пользователя со стороны пользователя
     @GetMapping("/{id}/edit")
-    public String editPerson(@PathVariable("id")int id, Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        model.addAttribute("person",personDetails.getPerson().getRole());
-
+    public String getPageEditPerson(@PathVariable("id")int id, Model model){
+        PersonDetails personDetails = AuthContext.getPersonDetailsFromContext();
+        boolean good = false;
+        if(personDetails!=null){
+            if(personDetails.getPerson().getId()==id){
+                good=true;
+                model.addAttribute("person",personDetails.getPerson().getRole());
+            }
+        }
+        if(!good){
+            return "error";
+        }
         return "views/people/show";
+    }
+    //Запрос на обновление из аккаунта пользователя
+    @PatchMapping("/{id}/edit")
+    public String updatePerson(@PathVariable("id")int id,
+                               @ModelAttribute("person")@Valid Person person,
+                               BindingResult bindingResult){
+        PersonDetails personDetails = AuthContext.getPersonDetailsFromContext();
+        if(personDetails!=null){
+            personValidator.validate(person,bindingResult);
+            if(personDetails.getPerson().getId()==id&&!bindingResult.hasErrors()){
+                person.setId(id);
+                registrationService.register(person,personDetails.getPerson().getRole().equals("ROLE_ADMIN"));
+            }else {
+                return "views/people/show";
+            }
+        }else {
+            return "views/people/show";
+        }
+        return "redirect:/";
     }
     //Получение информации о пользователе у админа
     @GetMapping("/admin/{id}")
