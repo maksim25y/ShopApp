@@ -11,6 +11,11 @@
             <button>Редактировать профиль</button>
         </a>
     </div>
+    <div th:if="${person}">
+        <a th:href="@{/items}">
+            <button>Список товаров</button>
+        </a>
+    </div>
     <div th:if="${person==null}">
         <div>
             <a th:href="@{/auth/login}">

@@ -8,10 +8,10 @@
     <div th:if="${items}">
         <ul th:each="item: ${items}" class="list-group mb-2">
             <li class="list-group-item" aria-current="true">
-<!--                //<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">-->
-                    <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${item.getName()+' , '+item.getDescription()+' , '+item.getPhoto()}">Item</a>
-                <img width="200" height="100" th:src="@{/images/{path}(path=${item.getPhoto()})}" />                <!--                    <button type="submit">Удалить</button>-->
-<!--                //</form>-->
+                <div>
+                    <img width="200" height="100" th:src="@{/images/{path}(path=${item.getPhoto()})}" />
+                </div>
+                <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${item.getName()+' , '+item.getDescription()}">Item</a>
             </li>
         </ul>
     </div>
