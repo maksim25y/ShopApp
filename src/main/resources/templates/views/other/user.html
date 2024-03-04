@@ -10,12 +10,18 @@
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <label for="username">Введите имя пользователя: </label>
         <input type="text" th:field="*{username}" id="username"/>
+        <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Year of birth Error
+        </div>
         <br/>
         <label for="yearOfBirth">Введите год рождения пользователя: </label>
         <input type="number" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+        <div style="color:red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year of birth Error
+        </div>
         <br/>
         <label for="password">Введите пароль пользователю: </label>
         <input type="password" th:field="*{password}" id="password"/>
+        <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error
+        </div>
         <br/>
         <input type="submit" value="Изменить"/>
         <div th:if="${param.error}" style="color: red">

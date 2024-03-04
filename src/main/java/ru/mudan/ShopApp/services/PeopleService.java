@@ -15,27 +15,31 @@ public class PeopleService {
     public PeopleService(PeopleRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
     }
-
+    //Удаление пользователя по id
     public void deleteById(int id) {
         peopleRepository.deleteById(id);
     }
     public List<Person> findAllByIdAndRole(String role) {
         return peopleRepository.findByRole(role);
     }
-
+    //Добавление пользователя в БД
     public void addPerson(Person person) {
         peopleRepository.save(person);
     }
-
+    //Поиск пользователя по id
     public Optional<Person> findById(int id) {
         return peopleRepository.findById(id);
     }
-
+    //Обновление пользователя в БД
     public void editPerson(Person person) {
         peopleRepository.save(person);
     }
-
-    public boolean checkIsPeeson(int id) {
+    //Проверка - пользователь с таким id есть в бд
+    public boolean checkIsPerson(int id) {
         return !peopleRepository.findById(id).isEmpty();
+    }
+
+    public Optional<Person> findByUserName(String username) {
+        return peopleRepository.findByUsername(username);
     }
 }

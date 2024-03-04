@@ -8,6 +8,7 @@ public class AuthContext {
     public static PersonDetails getPersonDetailsFromContext(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
+        //Если пользователь не залогинен
         if(principal.equals("anonymousUser")){
             return null;
         }

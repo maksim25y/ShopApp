@@ -18,10 +18,9 @@ import ru.mudan.ShopApp.security.PersonDetails;
 import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.services.RegistrationService;
 import ru.mudan.ShopApp.services.SessionService;
-import ru.mudan.ShopApp.util.AuthContext;
+import ru.mudan.ShopApp.util.PersonValidator;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,18 +29,25 @@ public class PeopleController {
     private final PeopleService peopleService;
     private final RegistrationService registrationService;
     private final SessionService sessionService;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, RegistrationService registrationService, SessionService sessionService) {
+    public PeopleController(PeopleService peopleService, RegistrationService registrationService, SessionService sessionService, PersonValidator personValidator) {
         this.peopleService = peopleService;
         this.registrationService = registrationService;
         this.sessionService = sessionService;
+        this.personValidator = personValidator;
     }
+    //Добавление пользвателя в БД
     @PostMapping
-    public String addUser(@ModelAttribute("person")@Valid Person person){
+    public String addUser(@ModelAttribute("person")@Valid Person person
+    ,BindingResult bindingResult){
+        personValidator.validate(person,bindingResult);
+        if(bindingResult.hasErrors())return "views/auth/registration";
         peopleService.addPerson(person);
         return "redirect:/";
     }
+    //Получение информации о пользователе со стороны пользователя
     @GetMapping("/{id}")
     public String getPerson(@PathVariable("id")int id, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +66,7 @@ public class PeopleController {
         }
         return "views/people/show";
     }
+    //Редактирование пользователя со стороны пользователя
     @GetMapping("/{id}/edit")
     public String editPerson(@PathVariable("id")int id, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -68,21 +75,25 @@ public class PeopleController {
 
         return "views/people/show";
     }
+    //Получение информации о пользователе у админа
     @GetMapping("/admin/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String userInfoFromAdmin(Model model, @PathVariable("id")int id) {
         model.addAttribute("person",peopleService.findById(id).get());
         return "views/other/user";
     }
+    //Редактирование пользователя - со стороны админа
     @PostMapping("/admin/{id}/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editUserFromAdmin(@ModelAttribute("person")@Valid Person person,
                                     @PathVariable("id")int id, BindingResult bindingResult) {
         person.setId(id);
+        personValidator.validate(person,bindingResult);
+        if(bindingResult.hasErrors())return "views/other/user";
         registrationService.register(person);
         return "redirect:/admin";
     }
-
+    //Удаление пользователя - доступно только админу
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deletePerson(@PathVariable("id")int id){

@@ -13,7 +13,7 @@ import java.util.List;
 public class SessionService {
     @Autowired
     private SessionRegistry sessionRegistry;
-
+    //Разлогин пользователя - если админ удалил его например
     public void logoutUser(String username) {
         List<Object> principals = sessionRegistry.getAllPrincipals();
 

@@ -20,24 +20,23 @@ import javax.servlet.http.HttpServletResponse;
 public class MainController {
     private final AdminService adminService;
     private final PeopleService peopleService;
-
     @Autowired
     public MainController(AdminService adminService, PeopleService peopleService) {
         this.adminService = adminService;
         this.peopleService = peopleService;
     }
-
+    //Главная страница - если юзер вошел в акк, то кнопка редактирования
     @GetMapping
     public String showUserInfo(Model model, HttpServletRequest httpServletRequest) {
         PersonDetails person = AuthContext.getPersonDetailsFromContext();
         if(person!=null){
-            if(peopleService.checkIsPeeson(person.getPerson().getId())){
+            if(peopleService.checkIsPerson(person.getPerson().getId())){
                 model.addAttribute("person",person.getPerson());
             }
         }
         return "views/index";
     }
-
+    //Страница админка - можно удалять пользователей и редачить
     @GetMapping("/admin")
     public String adminPage(Model model) {
         model.addAttribute("people",peopleService.findAllByIdAndRole("ROLE_USER"));
