@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Neil Alishev
@@ -30,6 +32,8 @@ public class Person {
 
     @Column(name = "role")
     private String role;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "person")
+    private List<Item> items = new ArrayList<>();
 
     // Конструктор по умолчанию нужен для Spring
     public Person() {
@@ -78,6 +82,14 @@ public class Person {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     @Override
