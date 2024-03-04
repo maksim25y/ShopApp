@@ -11,5 +11,18 @@
             <button>Редактировать профиль</button>
         </a>
     </div>
+    <div th:if="${person==null}">
+        <div>
+            <a th:href="@{/auth/login}">
+                <button>Войти</button>
+            </a>
+        </div>
+        <br>
+        <div>
+            <a th:href="@{/auth/registration}">
+                <button>Регистрация</button>
+            </a>
+        </div>
+    </div>
 </body>
 </html>
