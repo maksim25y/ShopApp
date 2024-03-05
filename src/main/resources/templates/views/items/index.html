@@ -15,5 +15,10 @@
             </li>
         </ul>
     </div>
+    <div th:if="${admin}">
+        <a th:href="@{/items/add}">
+            <button>Добавить товар</button>
+        </a>
+    </div>
 </body>
 </html>

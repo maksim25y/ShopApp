@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mudan.ShopApp.models.Item;
 import ru.mudan.ShopApp.services.ItemsService;
+import ru.mudan.ShopApp.util.AuthContext;
 import ru.mudan.ShopApp.util.ImageSaver;
 
 import javax.validation.Valid;
@@ -26,6 +27,9 @@ public class ItemsController {
     @GetMapping
     public String getAllItems(Model model){
         model.addAttribute("items",itemsService.findAll());
+        if(AuthContext.getPersonDetailsFromContext().getPerson().getRole().equals("ROLE_ADMIN")){
+            model.addAttribute("admin",true);
+        }
         return "views/items/index";
     }
     @GetMapping
