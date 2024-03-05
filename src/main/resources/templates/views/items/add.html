@@ -5,7 +5,7 @@
     <title>Добавить товар</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/items}" th:object="${item}">
+<form th:method="POST" th:action="@{/items}" th:object="${item}" enctype="multipart/form-data">
     <label for="name">Введите название товара: </label>
     <input type="text" th:field="*{name}" id="name" required/>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
@@ -16,7 +16,7 @@
     </div>
     <br/>
     <label for="photo">Выберите изображение:
-        <input type="file" name="photo" id="photo" th:field="*{photo}" required>
+        <input type="file" name="file" id="photo" required>
     </label><br>
     <input type="submit" value="Sign up!"/>
 </form>

@@ -5,12 +5,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mudan.ShopApp.models.Item;
-import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.services.ItemsService;
 import ru.mudan.ShopApp.util.ImageSaver;
 
@@ -20,9 +17,11 @@ import javax.validation.Valid;
 @RequestMapping("/items")
 public class ItemsController {
     private final ItemsService itemsService;
+    private final ImageSaver imageSaver;
     @Autowired
-    public ItemsController(ItemsService itemsService) {
+    public ItemsController(ItemsService itemsService, ImageSaver imageSaver) {
         this.itemsService = itemsService;
+        this.imageSaver = imageSaver;
     }
     @GetMapping
     public String getAllItems(Model model){
@@ -38,15 +37,10 @@ public class ItemsController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping
-    public String addItemAdminPost(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult){
-        //TODO Validation
-        System.out.println(item.getPhoto());
-        String imageUrl = item.getPhoto(); // URL вашего изображения
-        String folderPath = "D:\\NewIdeaApps\\ShopApp\\src\\main\\resources\\static\\images"; // Путь к папке для сохранения
-
-        ImageSaver imageSaver = new ImageSaver();
-        imageSaver.saveImageToFolder(imageUrl, folderPath);
-        //itemsService.addItem(item);
-        return "views/items/add";
+    public String addItemAdminPost(@ModelAttribute("item") @Valid Item item, @RequestParam("file") MultipartFile file, BindingResult bindingResult){
+        imageSaver.saveImage(file, file.getOriginalFilename());
+        item.setPhoto(file.getOriginalFilename());
+        itemsService.addItem(item);
+        return "redirect:/items";
     }
 }
