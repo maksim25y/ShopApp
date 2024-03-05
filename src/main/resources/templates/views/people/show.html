@@ -35,5 +35,8 @@
     <div th:if="${person.getRole()=='ROLE_ADMIN'}">
         <a href="/admin">Админка</a>
     </div>
+    <div th:if="${person.getRole()=='ROLE_ADMIN'}">
+        <a href="/items/new">Добавить товар</a>
+    </div>
 </body>
 </html>
