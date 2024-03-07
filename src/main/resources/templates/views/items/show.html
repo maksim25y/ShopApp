@@ -13,5 +13,8 @@
             <button type="submit">Удалить</button>
         </form>
     </div>
+    <a th:href="@{/items/{id}/edit(id=${item.getId()})}">
+        <button>Редактировать</button>
+    </a>
 </body>
 </html>

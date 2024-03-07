@@ -48,17 +48,7 @@ public class ItemsController {
     @RequestMapping
     public String addItemAdminPost(@ModelAttribute("item") @Valid Item item, @RequestParam("file") MultipartFile file, BindingResult bindingResult) throws IOException {
 
-        if (file != null && !file.isEmpty()) {
-            File uploadDir = new File(imagesPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "_" + file.getOriginalFilename();
-            File uploadedFile = new File(uploadDir.getAbsolutePath(), resultFilename);
-            FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
-            item.setPhoto(resultFilename);
-        }
+        addPhoto(item, file);
         itemsService.addItem(item);
         return "redirect:/items";
     }
@@ -76,18 +66,50 @@ public class ItemsController {
     }
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteItemById(@PathVariable("id")int id){
+    public String deleteItemById(@PathVariable("id")int id,MultipartFile file){
+        deletePhoto(id);
+        itemsService.deleteById(id);
+        return "redirect:/items";
+    }
+    @GetMapping("/{id}/edit")
+    public String editItem(@PathVariable("id")int id,Model model){
         Item item = itemsService.findById(id).get();
-        String photoPath = item.getPhoto();
-        // Удаление фотографии из директории
+        model.addAttribute("item",item);
+        return "views/items/edit";
+    }
+    @PatchMapping("/{id}")
+    public String updateItem(@PathVariable("id")int id,@ModelAttribute("item")@Valid Item item,@RequestParam("file")MultipartFile file) throws IOException {
+        deletePhoto(id);
+        addPhoto(item, file);
+        item.setId(id);
+        itemsService.addItem(item);
+        return "redirect:/items";
+    }
+
+    private void deletePhoto(@PathVariable("id") int id) {
+        Item itemFromDb = itemsService.findById(id).get();
+        String photoPath = itemFromDb.getPhoto();
+
         if (photoPath != null && !photoPath.isEmpty()) {
             File photoFile = new File(imagesPath + "/" + photoPath);
             if (photoFile.exists()) {
                 photoFile.delete();
             }
         }
-        itemsService.deleteById(id);
-        return "redirect:/items";
+    }
+
+    private void addPhoto(@ModelAttribute("item") @Valid Item item, @RequestParam("file") MultipartFile file) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            File uploadDir = new File(imagesPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "_" + file.getOriginalFilename();
+            File uploadedFile = new File(uploadDir.getAbsolutePath(), resultFilename);
+            FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+            item.setPhoto(resultFilename);
+        }
     }
 
 }
