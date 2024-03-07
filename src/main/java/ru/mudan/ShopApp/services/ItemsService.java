@@ -8,18 +8,19 @@ import ru.mudan.ShopApp.repositories.ItemsRepository;
 
 import java.util.List;
 
-@Transactional(readOnly = true)
 @Service
 public class ItemsService {
     private final ItemsRepository itemsRepository;
+
     @Autowired
     public ItemsService(ItemsRepository itemsRepository) {
         this.itemsRepository = itemsRepository;
     }
-    @Transactional
-    public List<Item>findAll(){
+
+    public List<Item> findAll() {
         return itemsRepository.findAll();
     }
+
     @Transactional
     public void addItem(Item item) {
         itemsRepository.save(item);

@@ -35,7 +35,6 @@ public class Person {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "person")
     private List<Item> items = new ArrayList<>();
 
-    // Конструктор по умолчанию нужен для Spring
     public Person() {
     }
 

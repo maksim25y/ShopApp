@@ -9,7 +9,7 @@
         <ul th:each="item: ${items}" class="list-group mb-2">
             <li class="list-group-item" aria-current="true">
                 <div>
-                    <img width="200" height="100" th:src="@{/images/{path}(path=${item.getPhoto()})}" />
+                    <img width="200" height="100" th:src="@{/images/{id}(id=${item.photo})}">
                 </div>
                 <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" th:text="${item.getName()+' , '+item.getDescription()}">Item</a>
             </li>
