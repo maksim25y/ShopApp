@@ -25,7 +25,7 @@ public class ItemsController {
     @Value("${images.path}")
     private String imagesPath;
     @Autowired
-    public ItemsController(ItemsService itemsService, ImageSaver imageSaver) {
+    public ItemsController(ItemsService itemsService) {
         this.itemsService = itemsService;
     }
     @GetMapping
