@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -60,5 +61,14 @@ public class ItemsController {
         }
         itemsService.addItem(item);
         return "redirect:/items";
+    }
+    @GetMapping("/{id}")
+    public String getItemById(@PathVariable("id")int id,Model model){
+        Optional<Item>item = itemsService.findById(id);
+        if(item.isEmpty()){
+            return "error";
+        }
+        model.addAttribute("item",item.get());
+        return "views/items/show";
     }
 }

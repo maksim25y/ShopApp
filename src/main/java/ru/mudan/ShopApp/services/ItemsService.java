@@ -7,6 +7,7 @@ import ru.mudan.ShopApp.models.Item;
 import ru.mudan.ShopApp.repositories.ItemsRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemsService {
@@ -24,5 +25,9 @@ public class ItemsService {
     @Transactional
     public void addItem(Item item) {
         itemsRepository.save(item);
+    }
+
+    public Optional<Item> findById(int id) {
+        return itemsRepository.findById(id);
     }
 }
