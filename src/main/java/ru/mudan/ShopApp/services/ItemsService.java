@@ -30,4 +30,8 @@ public class ItemsService {
     public Optional<Item> findById(int id) {
         return itemsRepository.findById(id);
     }
+    @Transactional
+    public void deleteById(int id) {
+        itemsRepository.deleteById(id);
+    }
 }

@@ -69,6 +69,25 @@ public class ItemsController {
             return "error";
         }
         model.addAttribute("item",item.get());
+        if(AuthContext.getPersonDetailsFromContext().getPerson().getRole().equals("ROLE_ADMIN")){
+            model.addAttribute("admin",true);
+        }
         return "views/items/show";
     }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteItemById(@PathVariable("id")int id){
+        Item item = itemsService.findById(id).get();
+        String photoPath = item.getPhoto();
+        // Удаление фотографии из директории
+        if (photoPath != null && !photoPath.isEmpty()) {
+            File photoFile = new File(imagesPath + "/" + photoPath);
+            if (photoFile.exists()) {
+                photoFile.delete();
+            }
+        }
+        itemsService.deleteById(id);
+        return "redirect:/items";
+    }
+
 }
