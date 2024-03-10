@@ -50,4 +50,10 @@ public class PeopleService {
         person.getItems().add(item);
         item.setPerson(person);
     }
+    @Transactional
+    public void removeItem(int id, Item item) {
+        Person person = peopleRepository.getById(id);
+        person.getItems().remove(item);
+        item.setPerson(null);
+    }
 }

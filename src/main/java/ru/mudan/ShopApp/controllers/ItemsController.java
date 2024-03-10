@@ -104,6 +104,13 @@ public class ItemsController {
         peopleService.addItem(AuthContext.getPersonDetailsFromContext().getPerson().getId(),item);
         return "redirect:/items";
     }
+    @DeleteMapping("/{id}/booking")
+    public String cancellationOfBooking(@PathVariable("id")int id){
+        Item item = itemsService.findById(id).get();
+        Person person = peopleService.findById(AuthContext.getPersonDetailsFromContext().getPerson().getId()).get();
+        peopleService.removeItem(AuthContext.getPersonDetailsFromContext().getPerson().getId(),item);
+        return "redirect:/items";
+    }
 
     private void deletePhoto(@PathVariable("id") int id) {
         Item itemFromDb = itemsService.findById(id).get();

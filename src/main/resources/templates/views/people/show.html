@@ -42,6 +42,9 @@
         <ul th:each="item: ${items}">
             <li>
                 <p th:text="${item.getName()}"></p>
+                <form th:method="DELETE" th:action="@{'/items/' + ${item.getId()} + '/booking'}">
+                    <button type="submit">Удалить из корзины</button>
+                </form>
             </li>
         </ul>
     </div>
