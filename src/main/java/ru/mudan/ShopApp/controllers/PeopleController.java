@@ -59,6 +59,12 @@ public class PeopleController {
         }
         return "views/people/show";
     }
+    //Поулучение корзины пользователя
+    @GetMapping("/{id}/basket")
+    public String getUserBasket(@PathVariable("id")int id,Model model){
+        model.addAttribute("items",peopleService.getAllItemsByPersonId(id));
+        return "views/people/basket";
+    }
     //Редактирование пользователя со стороны пользователя
     @GetMapping("/{id}/edit")
     public String getPageEditPerson(@PathVariable("id")int id, Model model){

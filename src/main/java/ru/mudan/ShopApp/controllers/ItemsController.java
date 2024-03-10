@@ -62,16 +62,23 @@ public class ItemsController {
         if(item.isEmpty()){
             return "error";
         }
-        model.addAttribute("item",item.get());
         Person person = item.get().getPerson();
+        boolean admin = AuthContext.getPersonDetailsFromContext().getPerson().getRole().equals("ROLE_ADMIN");
         if(person!=null){
-            model.addAttribute("owner",person.getUsername());
+            int personId = AuthContext.getPersonDetailsFromContext().getPerson().getId();
+            if(person.getId()==personId || admin){
+                model.addAttribute("owner",person.getUsername());
+            }else {
+                return "error";
+            }
+            if(admin){
+                model.addAttribute("admin",true);
+            }
         }
-        if(AuthContext.getPersonDetailsFromContext().getPerson().getRole().equals("ROLE_ADMIN")){
-            model.addAttribute("admin",true);
-        }
+        model.addAttribute("item",item.get());
         return "views/items/show";
     }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteItemById(@PathVariable("id")int id){
@@ -96,7 +103,6 @@ public class ItemsController {
         deletePhoto(id);
         addPhoto(item, file);
         itemsService.updateItem(item,id);
-
         return "redirect:/items";
     }
     @PostMapping("/{id}/booking")
