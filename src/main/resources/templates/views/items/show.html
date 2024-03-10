@@ -8,8 +8,7 @@
     <h2 th:text="${item.getName()}"></h2>
     <img width="200" height="100" th:src="@{/images/{id}(id=${item.photo})}">
     <p th:text="${item.getDescription()}"></p>
-    <p th:if="${owner}" >Товар забронирован</p>
-    <form th:if="${owner==null}" th:action="@{'/items/' + ${item.getId()} + '/booking'}" th:method="POST">
+    <form th:action="@{'/items/' + ${item.getId()} + '/booking'}" th:method="POST">
         <button type="submit">Добавить в корзину</button>
     </form>
     <div th:if="${admin}">

@@ -22,6 +22,9 @@ public class ItemsService {
     public List<Item> findAll() {
         return itemsRepository.findAll();
     }
+    public List<Item>findAllDontBookedItems(){
+        return itemsRepository.findAllByPersonIsNull();
+    };
 
     @Transactional
     public void addItem(Item item) {

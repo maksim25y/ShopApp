@@ -35,7 +35,7 @@ public class ItemsController {
     }
     @GetMapping
     public String getAllItems(Model model){
-        model.addAttribute("items",itemsService.findAll());
+        model.addAttribute("items",itemsService.findAllDontBookedItems());
         if(AuthContext.getPersonDetailsFromContext().getPerson().getRole().equals("ROLE_ADMIN")){
             model.addAttribute("admin",true);
         }
