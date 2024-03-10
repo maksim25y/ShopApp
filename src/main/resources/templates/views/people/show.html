@@ -38,5 +38,12 @@
     <div th:if="${person.getRole()=='ROLE_ADMIN'}">
         <a href="/items/new">Добавить товар</a>
     </div>
+    <div th:if="${items}">
+        <ul th:each="item: ${items}">
+            <li>
+                <p th:text="${item.getName()}"></p>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>

@@ -50,6 +50,7 @@ public class PeopleController {
                 Optional<Person> person = peopleService.findById(id);
                 if(person.isEmpty())return "error";
                 model.addAttribute("person",person.get());
+                model.addAttribute("items",person.get().getItems());
             }else {
                 return "error";
             }

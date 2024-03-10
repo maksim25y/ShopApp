@@ -9,7 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mudan.ShopApp.models.Item;
+import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.services.ItemsService;
+import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.util.AuthContext;
 import org.apache.commons.io.FileUtils;
 
@@ -23,11 +25,13 @@ import java.util.UUID;
 @RequestMapping("/items")
 public class ItemsController {
     private final ItemsService itemsService;
+    private final PeopleService peopleService;
     @Value("${images.path}")
     private String imagesPath;
     @Autowired
-    public ItemsController(ItemsService itemsService) {
+    public ItemsController(ItemsService itemsService, PeopleService peopleService, PeopleService peopleService1) {
         this.itemsService = itemsService;
+        this.peopleService = peopleService1;
     }
     @GetMapping
     public String getAllItems(Model model){
@@ -57,6 +61,10 @@ public class ItemsController {
             return "error";
         }
         model.addAttribute("item",item.get());
+        Person person = item.get().getPerson();
+        if(person!=null){
+            model.addAttribute("owner",person.getUsername());
+        }
         if(AuthContext.getPersonDetailsFromContext().getPerson().getRole().equals("ROLE_ADMIN")){
             model.addAttribute("admin",true);
         }
@@ -87,6 +95,13 @@ public class ItemsController {
         addPhoto(item, file);
         itemsService.updateItem(item,id);
 
+        return "redirect:/items";
+    }
+    @PostMapping("/{id}/booking")
+    public String bookingOfItem(@PathVariable("id")int id){
+        Item item = itemsService.findById(id).get();
+        Person person = peopleService.findById(AuthContext.getPersonDetailsFromContext().getPerson().getId()).get();
+        peopleService.addItem(AuthContext.getPersonDetailsFromContext().getPerson().getId(),item);
         return "redirect:/items";
     }
 
