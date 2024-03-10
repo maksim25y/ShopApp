@@ -9,14 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.services.RegistrationService;
-import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.util.PersonValidator;
 
 import javax.validation.Valid;
 
-/**
- * @author Neil Alishev
- */
 @Controller
 @RequestMapping("/auth")
 public class AuthController {

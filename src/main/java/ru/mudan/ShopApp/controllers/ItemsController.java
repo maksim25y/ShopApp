@@ -37,17 +37,15 @@ public class ItemsController {
         }
         return "views/items/index";
     }
-    @GetMapping
+    @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/add")
     public String addItemAdmin(@ModelAttribute("item") Item item){
         return "views/items/add";
     }
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping
-    public String addItemAdminPost(@ModelAttribute("item") @Valid Item item, @RequestParam("file") MultipartFile file, BindingResult bindingResult) throws IOException {
-
+    public String addItemAdminPost(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult,@RequestParam("file") MultipartFile file) {
+        if(bindingResult.hasErrors())return "views/items/add";
         addPhoto(item, file);
         itemsService.addItem(item);
         return "redirect:/items";
@@ -66,23 +64,29 @@ public class ItemsController {
     }
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteItemById(@PathVariable("id")int id,MultipartFile file){
+    public String deleteItemById(@PathVariable("id")int id){
         deletePhoto(id);
         itemsService.deleteById(id);
         return "redirect:/items";
     }
     @GetMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editItem(@PathVariable("id")int id,Model model){
         Item item = itemsService.findById(id).get();
         model.addAttribute("item",item);
         return "views/items/edit";
     }
     @PatchMapping("/{id}")
-    public String updateItem(@PathVariable("id")int id,@ModelAttribute("item")@Valid Item item,@RequestParam("file")MultipartFile file) throws IOException {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String updateItem(@PathVariable("id") int id,
+                             @ModelAttribute("item") @Valid Item item,
+                             BindingResult bindingResult,
+                             @RequestParam("file") MultipartFile file) {
+        if(bindingResult.hasErrors())return "views/items/edit";
         deletePhoto(id);
         addPhoto(item, file);
-        item.setId(id);
-        itemsService.addItem(item);
+        itemsService.updateItem(item,id);
+
         return "redirect:/items";
     }
 
@@ -98,7 +102,7 @@ public class ItemsController {
         }
     }
 
-    private void addPhoto(@ModelAttribute("item") @Valid Item item, @RequestParam("file") MultipartFile file) throws IOException {
+    private void addPhoto(@ModelAttribute("item") @Valid Item item, @RequestParam("file") MultipartFile file){
         if (file != null && !file.isEmpty()) {
             File uploadDir = new File(imagesPath);
             if (!uploadDir.exists()) {
@@ -107,7 +111,10 @@ public class ItemsController {
             String uuidFile = UUID.randomUUID().toString();
             String resultFilename = uuidFile + "_" + file.getOriginalFilename();
             File uploadedFile = new File(uploadDir.getAbsolutePath(), resultFilename);
-            FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+            try {
+                FileUtils.writeByteArrayToFile(uploadedFile, file.getBytes());
+            } catch (IOException e) {
+            }
             item.setPhoto(resultFilename);
         }
     }

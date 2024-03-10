@@ -7,9 +7,6 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Neil Alishev
- */
 @Entity
 @Table(name = "Person")
 public class Person {

@@ -34,4 +34,9 @@ public class ItemsService {
     public void deleteById(int id) {
         itemsRepository.deleteById(id);
     }
+    @Transactional
+    public void updateItem(Item item,int id) {
+        item.setId(id);
+        itemsRepository.save(item);
+    }
 }

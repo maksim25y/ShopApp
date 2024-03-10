@@ -1,6 +1,8 @@
 package ru.mudan.ShopApp.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "item")
@@ -9,8 +11,12 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name")
+    @NotEmpty
+    @Size(min = 2, message = "Название товара должно содержать минимум 2 символа")
     private String name;
     @Column(name = "description")
+    @NotEmpty
+    @Size(min = 2, message = "Описание должно содержать минимум 2 символа")
     private String description;
     @Column(name = "photo")
     private String photo;
