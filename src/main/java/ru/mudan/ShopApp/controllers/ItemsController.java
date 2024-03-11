@@ -71,9 +71,9 @@ public class ItemsController {
             }else {
                 return "error";
             }
-            if(admin){
-                model.addAttribute("admin",true);
-            }
+        }
+        if(admin){
+            model.addAttribute("admin",true);
         }
         model.addAttribute("item",item.get());
         return "views/items/show";

@@ -16,12 +16,12 @@
         <form th:method="DELETE" th:action="@{/items/{id}(id=${item.getId()})}">
             <button type="submit">Удалить товар</button>
         </form>
-        <div th:if="${owner}">
-            <p th:text="${'Товар у: ' +owner}"></p>
-        </div>
-        <div th:if="${owner==null}">
-            <p>Товар свободен</p>
-        </div>
+    </div>
+    <div th:if="${owner}">
+        <p th:text="${'Товар у: ' +owner}"></p>
+    </div>
+    <div th:if="${owner==null}">
+        <p>Товар свободен</p>
     </div>
     <a th:if="${admin}" th:href="@{/items/{id}/edit(id=${item.getId()})}">
         <button>Редактировать</button>
