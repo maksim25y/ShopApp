@@ -9,7 +9,7 @@
     <h1>Главная</h1>
     <div th:if="${person}">
         <a th:href="@{/people/{id}(id=${person.getId()})}">
-            <button>Редактировать профиль</button>
+            <button>Мой профиль</button>
         </a>
     </div>
     <div th:if="${person}">
