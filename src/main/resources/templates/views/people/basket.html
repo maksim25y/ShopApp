@@ -11,14 +11,15 @@
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                 <span class="fs-4">Maksberris</span>
             </a>
-
             <ul class="nav nav-pills">
                 <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Главная</a></li>
                 <li class="nav-item"><a href="/items" class="nav-link">Товары</a></li>
                 <li class="nav-item"><a th:href="@{/people/{id}(id=${id})}" class="nav-link">Профиль</a></li>
             </ul>
         </header>
+
         <h3>Ваша корзина:</h3>
+
         <div th:if="${items}">
             <ul th:each="item: ${items}" class="list-group mb-2">
                 <li class="list-group-item">
@@ -37,6 +38,7 @@
             </ul>
         </div>
     </div>
+    <hr>
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Главная</a></li>
