@@ -111,7 +111,8 @@ public class PeopleController {
     @PostMapping("/admin/{id}/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editUserFromAdmin(@ModelAttribute("person")@Valid Person person,
-                                    @PathVariable("id")int id, BindingResult bindingResult) {
+                                    BindingResult bindingResult,
+                                    @PathVariable("id")int id) {
         person.setId(id);
         personValidator.validate(person,bindingResult);
         if(bindingResult.hasErrors())return "views/other/user";
