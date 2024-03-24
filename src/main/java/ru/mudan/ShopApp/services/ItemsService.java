@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.ShopApp.models.Item;
-import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.repositories.ItemsRepository;
 
 import java.util.List;

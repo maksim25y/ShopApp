@@ -25,6 +25,20 @@
             <li class="list-group-item" aria-current="true">
                 <p th:text="${'Год рождения: '+person.getYearOfBirth()}">VALUE</p>
             </li>
+            <li th:if="${person.getEmail()!=null}" class="list-group-item" aria-current="true">
+                <p th:text="${'Почтовый ящик: '+person.getEmail()}">VALUE</p>
+                <p  class="alert alert-danger mt-2" role="alert" th:if="${person.isEmailActive()==false}">Почта не подтверждена</p>
+                <form th:if="${wait==null and person.isEmailActive()==false}" th:action="@{/people/{id}/email(id=${person.getId()})}" th:method="POST">
+                    <button class="btn btn-outline-danger active" type="submit">Отправить код подтверждения на почту</button>
+                </form>
+                <form th:if="${wait}" th:action="@{/people/{id}/email/code(id=${person.getId()})}" th:method="POST">
+                    <div class="form-group">
+                        <label for="wait">Введите код: </label>
+                        <input class="form-control" type="text" id="wait" name="inputCode" required/>
+                    </div>
+                    <button class="btn btn-outline-danger active" type="submit">Подтвердить</button>
+                </form>
+            </li>
         </ul>
         <hr>
         <h3>Редактирование информации:</h3>

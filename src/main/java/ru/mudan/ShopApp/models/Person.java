@@ -1,6 +1,7 @@
 package ru.mudan.ShopApp.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -29,15 +30,32 @@ public class Person {
 
     @Column(name = "role")
     private String role;
+    @Column(name = "email_active")
+    private boolean emailActive;
+    @Email
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "person")
     private List<Item> items = new ArrayList<>();
 
     public Person() {
     }
 
-    public Person(String username, int yearOfBirth) {
-        this.username = username;
+    public Person(int id, int yearOfBirth, String password, String role, boolean emailActive, String email) {
+        this.id = id;
         this.yearOfBirth = yearOfBirth;
+        this.password = password;
+        this.role = role;
+        this.emailActive = emailActive;
+        this.email = email;
     }
 
     public int getId() {
@@ -96,5 +114,13 @@ public class Person {
                 ", yearOfBirth=" + yearOfBirth +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public boolean isEmailActive() {
+        return emailActive;
+    }
+
+    public void setEmailActive(boolean emailActive) {
+        this.emailActive = emailActive;
     }
 }

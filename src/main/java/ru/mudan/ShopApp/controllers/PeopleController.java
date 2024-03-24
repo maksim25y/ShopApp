@@ -14,8 +14,10 @@ import ru.mudan.ShopApp.services.SessionService;
 import ru.mudan.ShopApp.util.AuthContext;
 import ru.mudan.ShopApp.util.PersonValidator;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/people")
@@ -43,7 +45,7 @@ public class PeopleController {
     }
     //Получение информации о пользователе со стороны пользователя
     @GetMapping("/{id}")
-    public String getPerson(@PathVariable("id")int id, Model model){
+    public String getPerson(@PathVariable("id")int id, Model model,HttpSession session){
         PersonDetails personDetails = AuthContext.getPersonDetailsFromContext();
         if(personDetails!=null){
             if(personDetails.getPerson().getId()==id){
@@ -51,6 +53,9 @@ public class PeopleController {
                 if(person.isEmpty())return "error";
                 model.addAttribute("person",person.get());
                 model.addAttribute("items",person.get().getItems());
+                if(session.getAttribute("code")!=null){
+                    model.addAttribute("wait",true);
+                }
             }else {
                 return "error";
             }
@@ -129,5 +134,27 @@ public class PeopleController {
             peopleService.deleteById(id);
         }
         return "redirect:/";
+    }
+    @PostMapping("/{id}/email")
+    public String sendEmailCode(@PathVariable("id")int id, Model model, HttpSession session){
+        Optional<Person> personOptional = peopleService.findById(id);
+        if(!personOptional.isEmpty()){
+            Person person = personOptional.get();
+            String email = person.getEmail();
+            String code = UUID.randomUUID().toString();
+            //Отправляем код на почту
+            session.setAttribute("code",code);
+            session.setAttribute("time",System.currentTimeMillis());
+        }
+        return String.format("redirect:/people/%s",id);
+    }
+    @PostMapping("/{id}/email/code")
+    public String checkInputCode(@PathVariable("id")int id, @RequestParam("inputCode")String inputCode, HttpSession session){
+        String sessionCode = (String) session.getAttribute("code");
+        if(sessionCode.equals(inputCode)){
+            peopleService.editEmailToGood(id);
+        }
+        session.removeAttribute("code");
+        return String.format("redirect:/people/%s",id);
     }
 }

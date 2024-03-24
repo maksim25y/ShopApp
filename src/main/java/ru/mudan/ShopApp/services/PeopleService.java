@@ -61,4 +61,10 @@ public class PeopleService {
         Person person = peopleRepository.findById(id).get();
         return person.getItems();
     }
+    @Transactional
+    public void editEmailToGood(int id) {
+        Person person = peopleRepository.findById(id).get();
+        person.setEmailActive(true);
+        peopleRepository.save(person);
+    }
 }
