@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.security.PersonDetails;
+import ru.mudan.ShopApp.services.EmailSenderService;
 import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.services.RegistrationService;
 import ru.mudan.ShopApp.services.SessionService;
@@ -26,6 +27,8 @@ public class PeopleController {
     private final RegistrationService registrationService;
     private final SessionService sessionService;
     private final PersonValidator personValidator;
+    @Autowired
+    private EmailSenderService senderService;
 
     @Autowired
     public PeopleController(PeopleService peopleService, RegistrationService registrationService, SessionService sessionService, PersonValidator personValidator) {
@@ -142,6 +145,7 @@ public class PeopleController {
             Person person = personOptional.get();
             String email = person.getEmail();
             String code = UUID.randomUUID().toString();
+            senderService.sendSimpleEmail(person.getEmail(), "Подтверждение почты", code);
             //Отправляем код на почту
             session.setAttribute("code",code);
             session.setAttribute("time",System.currentTimeMillis());

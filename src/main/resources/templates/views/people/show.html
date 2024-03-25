@@ -32,11 +32,11 @@
                     <button class="btn btn-outline-danger active" type="submit">Отправить код подтверждения на почту</button>
                 </form>
                 <form th:if="${wait}" th:action="@{/people/{id}/email/code(id=${person.getId()})}" th:method="POST">
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="wait">Введите код: </label>
                         <input class="form-control" type="text" id="wait" name="inputCode" required/>
                     </div>
-                    <button class="btn btn-outline-danger active" type="submit">Подтвердить</button>
+                    <button class="btn btn-outline-warning active" type="submit">Подтвердить</button>
                 </form>
             </li>
         </ul>

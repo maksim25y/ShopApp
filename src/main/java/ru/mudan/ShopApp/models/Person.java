@@ -32,7 +32,6 @@ public class Person {
     private String role;
     @Column(name = "email_active")
     private boolean emailActive;
-    @Email
     private String email;
 
     public String getEmail() {
