@@ -44,8 +44,10 @@
 
 </details>
 <details><summary>Реализация</summary>
-Во время выполнения проекта я использовал следующий набор технологий: PostgreSQL, Maven, Spring MVC, Spring Data JPA, ORM Hibernate, Bootstrap, Thymeleaf, Spring Validation.
+Во время выполнения проекта я использовал следующий набор технологий: PostgreSQL, Maven, Spring MVC, Spring Data JPA, Security, ORM Hibernate, Bootstrap, Thymeleaf, Spring Validation.
   
 База данных:
+![image](https://github.com/maksim25y/ShopApp/assets/131711956/6c8cee56-82a6-428d-a4eb-917834601c90)
+
 
 </details>
