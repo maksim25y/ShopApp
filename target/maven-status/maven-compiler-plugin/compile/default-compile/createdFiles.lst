@@ -1,4 +1,5 @@
 ru\mudan\ShopApp\security\PersonDetails.class
+ru\mudan\ShopApp\services\EmailSenderService.class
 ru\mudan\ShopApp\services\ItemsService.class
 ru\mudan\ShopApp\controllers\PeopleController.class
 ru\mudan\ShopApp\services\SessionService.class

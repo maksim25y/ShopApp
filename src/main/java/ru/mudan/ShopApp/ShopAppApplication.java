@@ -25,7 +25,9 @@ public class ShopAppApplication {
 				"    id serial primary key,\n" +
 				"    username  varchar(100) not null,\n" +
 				"    year_of_birth integer      not null,\n" +
-				"    password  varchar      not null,\n" +
+				"    email varchar," +
+				"	email_active  boolean default false," +
+				"    password  varchar not null,\n" +
 				"    role varchar(100) not null\n" +
 				");";
 		String sql2 = "create table if not exists item(\n" +
@@ -41,8 +43,8 @@ public class ShopAppApplication {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String passwordAdmin = "admin";
-		String insertAdmin = "INSERT INTO person(username, year_of_birth, password, role)" +
-				"VALUES('admin',2000,?,'ROLE_ADMIN');";
+		String insertAdmin = "INSERT INTO person(username, year_of_birth, email,password, role)" +
+				"VALUES('admin',2000,'myemail@gmail.com',?,'ROLE_ADMIN');";
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {

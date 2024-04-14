@@ -2,6 +2,7 @@ D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\models\Person.java
 D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\controllers\ItemsController.java
 D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\controllers\MainController.java
 D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\controllers\PeopleController.java
+D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\services\EmailSenderService.java
 D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\config\SecurityConfig.java
 D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\repositories\ItemsRepository.java
 D:\NewIdeaApps\ShopApp\src\main\java\ru\mudan\ShopApp\services\RegistrationService.java
