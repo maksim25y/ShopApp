@@ -2,8 +2,7 @@
 
 <details><summary>Функционал</summary>
 На главной странице расположен блок с кнопками, можно войти в аккаунт или зарегистрироваться:
-![image](https://github.com/maksim25y/ShopApp/assets/131711956/2e8a4484-cfea-45bb-9f4e-62430eb35d40)
-
+![image](https://github.com/maksim25y/ShopApp/assets/131711956/061a328f-dd0f-437f-856e-51e7b26d8426)
 
 При нажатии на кнопку "Регистрация" происходит переход на страницу регистрации:
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/9a8cc8d7-1b86-4f78-9fec-715afb946834)
