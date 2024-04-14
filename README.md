@@ -40,14 +40,7 @@
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/9103f6da-8c86-4979-9e66-54ba705d827f)
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/795cb3fd-4951-40bd-9170-af5177cdb0e1)
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/905bfca1-e2d8-403d-8b47-e28f7a6a76aa)
-
-
-
-
-
-
-
-
+![image](https://github.com/maksim25y/ShopApp/assets/131711956/37854085-5a12-4227-88ad-8f02ebc0b048)
 
 </details>
 <details><summary>Реализация</summary>
