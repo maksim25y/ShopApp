@@ -41,6 +41,10 @@
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/795cb3fd-4951-40bd-9170-af5177cdb0e1)
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/905bfca1-e2d8-403d-8b47-e28f7a6a76aa)
 ![image](https://github.com/maksim25y/ShopApp/assets/131711956/37854085-5a12-4227-88ad-8f02ebc0b048)
+Форма создания записи:
+![image](https://github.com/maksim25y/ShopApp/assets/131711956/f84c4849-a5cf-4f9f-a67c-dd46cda8316f)
+Созданная запись:
+![image](https://github.com/maksim25y/ShopApp/assets/131711956/009d060a-76b4-40a3-8e43-e17229d6b620)
 
 </details>
 <details><summary>Реализация</summary>
