@@ -143,7 +143,6 @@ public class PeopleController {
         Optional<Person> personOptional = peopleService.findById(id);
         if(!personOptional.isEmpty()){
             Person person = personOptional.get();
-            String email = person.getEmail();
             String code = UUID.randomUUID().toString();
             senderService.sendSimpleEmail(person.getEmail(), "Подтверждение почты", code);
             //Отправляем код на почту

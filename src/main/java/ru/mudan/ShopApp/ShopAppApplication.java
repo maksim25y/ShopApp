@@ -1,9 +1,12 @@
 package ru.mudan.ShopApp;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -17,15 +20,16 @@ import java.sql.SQLException;
 @Configuration
 @EnableConfigurationProperties
 @EnableScheduling
+@PropertySource("classpath:application.properties")
 public class ShopAppApplication {
+	@Value("${spring.datasource.url}")
+	String url;
+	@Value("${spring.datasource.username}")
+	String user;
+	@Value("${spring.datasource.password}")
+	String password;
 	@PostConstruct
 	public void init() {
-
-
-		String url = "jdbc:postgresql://db:5432/postgres";
-		String user = "admin";
-		String password = "root";
-
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String passwordAdmin = "admin";
 		String insertAdmin = "INSERT INTO person(username, year_of_birth, email,password, role)" +
