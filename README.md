@@ -44,7 +44,7 @@
 
 </details>
 <details><summary>Реализация</summary>
-Во время выполнения проекта я использовал следующий набор технологий: PostgreSQL, Maven, Spring MVC, Spring Data JPA, Security, ORM Hibernate, Bootstrap, Thymeleaf, Spring Validation.
+Во время выполнения проекта я использовал следующий набор технологий: Kafka, PostgreSQL, Maven, Spring MVC, Spring Data JPA, Security, ORM Hibernate, Bootstrap, Thymeleaf, Spring Validation.
   
 База данных:
 
