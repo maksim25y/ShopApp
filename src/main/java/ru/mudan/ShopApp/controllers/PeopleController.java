@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.mudan.ShopApp.kafka.KafkaProducer;
 import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.security.PersonDetails;
 import ru.mudan.ShopApp.services.EmailSenderService;
@@ -29,13 +30,16 @@ public class PeopleController {
     private final PersonValidator personValidator;
     @Autowired
     private EmailSenderService senderService;
+    private final KafkaProducer producer;
+
 
     @Autowired
-    public PeopleController(PeopleService peopleService, RegistrationService registrationService, SessionService sessionService, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, RegistrationService registrationService, SessionService sessionService, PersonValidator personValidator, KafkaProducer producer) {
         this.peopleService = peopleService;
         this.registrationService = registrationService;
         this.sessionService = sessionService;
         this.personValidator = personValidator;
+        this.producer = producer;
     }
     //Добавление пользвателя в БД
     @PostMapping
@@ -139,12 +143,13 @@ public class PeopleController {
         return "redirect:/";
     }
     @PostMapping("/{id}/email")
-    public String sendEmailCode(@PathVariable("id")int id, Model model, HttpSession session){
+    public String sendEmailCode(@PathVariable("id")int id, HttpSession session){
         Optional<Person> personOptional = peopleService.findById(id);
         if(!personOptional.isEmpty()){
             Person person = personOptional.get();
             String code = UUID.randomUUID().toString();
-            senderService.sendSimpleEmail(person.getEmail(), "Подтверждение почты", code);
+            producer.sendCodeOnEmail(person.getEmail()+" "+code);
+            //senderService.sendSimpleEmail(person.getEmail(), "Подтверждение почты", code);
             //Отправляем код на почту
             session.setAttribute("code",code);
             session.setAttribute("time",System.currentTimeMillis());

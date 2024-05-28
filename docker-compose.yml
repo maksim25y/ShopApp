@@ -1,17 +1,6 @@
 version: '3.8'
 
 services:
-  springbootapp:
-    image: openjdk:21
-    env_file:
-      - .env.docker
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./target/ShopApp-0.0.1-SNAPSHOT.jar:/app.jar
-    command: ["java", "-jar", "/app.jar"]
-    depends_on:
-      - db
   db:
     image: postgres:14.3-alpine
     restart: always
@@ -20,3 +9,32 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=root
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ADVERTISED_HOST_NAME: host.docker.internal
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    links:
+      - zookeeper
+  springbootapp:
+    image: openjdk:21
+    env_file:
+      - .env.docker
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./target/ShopApp-0.0.1-SNAPSHOT.jar:/app.jar
+    command: [ "java", "-jar", "/app.jar" ]
+    depends_on:
+      - db
+      - kafka
