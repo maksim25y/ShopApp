@@ -98,9 +98,10 @@ public class PeopleController {
     public String updatePerson(@PathVariable("id")int id,
                                @ModelAttribute("person")@Valid Person person,
                                BindingResult bindingResult){
+        personValidator.validate(person,bindingResult);
+        if(bindingResult.hasErrors())return "views/people/show";
         PersonDetails personDetails = AuthContext.getPersonDetailsFromContext();
         if(personDetails!=null){
-            personValidator.validate(person,bindingResult);
             if(personDetails.getPerson().getId()==id&&!bindingResult.hasErrors()){
                 person.setId(id);
                 peopleService.update(person);
