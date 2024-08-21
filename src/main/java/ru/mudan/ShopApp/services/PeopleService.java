@@ -1,6 +1,7 @@
 package ru.mudan.ShopApp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mudan.ShopApp.models.Item;
@@ -43,6 +44,18 @@ public class PeopleService {
 
     public Optional<Person> findByUserName(String username) {
         return peopleRepository.findByUsername(username);
+    }
+
+    @Transactional
+    public void update(Person person){
+        Optional<Person>optionalPerson = findById(person.getId());
+        if(optionalPerson.isPresent()){
+            Person personFromDB = optionalPerson.get();
+            person.setEmailActive(personFromDB.isEmailActive());
+            person.setEmail(personFromDB.getEmail());
+            person.setRole(personFromDB.getRole());
+        }
+        peopleRepository.save(person);
     }
     @Transactional
     public void addItem(int id, Item item) {

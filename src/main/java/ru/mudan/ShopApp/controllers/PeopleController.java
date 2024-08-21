@@ -103,7 +103,7 @@ public class PeopleController {
             personValidator.validate(person,bindingResult);
             if(personDetails.getPerson().getId()==id&&!bindingResult.hasErrors()){
                 person.setId(id);
-                registrationService.register(person,personDetails.getPerson().getRole().equals("ROLE_ADMIN"));
+                peopleService.update(person);
             }else {
                 return "views/people/show";
             }
