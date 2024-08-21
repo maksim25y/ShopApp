@@ -25,15 +25,15 @@ services:
     links:
       - zookeeper
   springbootapp:
-    image: openjdk:21
+    build: .
     env_file:
       - .env.docker
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
     ports:
       - "8080:8080"
-    volumes:
-      - ./target/ShopApp-0.0.1-SNAPSHOT.jar:/app.jar
+#    volumes:
+#      - ./target/ShopApp-0.0.1-SNAPSHOT.jar:/app.jar
     command: [ "java", "-jar", "/app.jar" ]
     depends_on:
       - db
