@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.mudan.ShopApp.kafka.KafkaProducer;
 import ru.mudan.ShopApp.models.Person;
 import ru.mudan.ShopApp.security.PersonDetails;
-import ru.mudan.ShopApp.services.EmailSenderService;
 import ru.mudan.ShopApp.services.PeopleService;
 import ru.mudan.ShopApp.services.RegistrationService;
 import ru.mudan.ShopApp.services.SessionService;
@@ -28,11 +27,7 @@ public class PeopleController {
     private final RegistrationService registrationService;
     private final SessionService sessionService;
     private final PersonValidator personValidator;
-    @Autowired
-    private EmailSenderService senderService;
     private final KafkaProducer producer;
-
-
     @Autowired
     public PeopleController(PeopleService peopleService, RegistrationService registrationService, SessionService sessionService, PersonValidator personValidator, KafkaProducer producer) {
         this.peopleService = peopleService;
@@ -97,11 +92,16 @@ public class PeopleController {
     @PatchMapping("/{id}/edit")
     public String updatePerson(@PathVariable("id")int id,
                                @ModelAttribute("person")@Valid Person person,
-                               BindingResult bindingResult){
+                               BindingResult bindingResult,
+                               Model model){
+        personValidator.validate(person,bindingResult);
         PersonDetails personDetails = AuthContext.getPersonDetailsFromContext();
         if(personDetails!=null){
-            personValidator.validate(person,bindingResult);
-            if(personDetails.getPerson().getId()==id&&!bindingResult.hasErrors()){
+            if(bindingResult.hasErrors()){
+                model.addAttribute("person",personDetails.getPerson());
+                return "views/people/show";
+            }
+            if(personDetails.getPerson().getId()==id){
                 person.setId(id);
                 peopleService.update(person);
             }else {
@@ -145,11 +145,10 @@ public class PeopleController {
     @PostMapping("/{id}/email")
     public String sendEmailCode(@PathVariable("id")int id, HttpSession session){
         Optional<Person> personOptional = peopleService.findById(id);
-        if(!personOptional.isEmpty()){
+        if(personOptional.isPresent()){
             Person person = personOptional.get();
             String code = UUID.randomUUID().toString();
             producer.sendCodeOnEmail(person.getEmail()+" "+code);
-            //senderService.sendSimpleEmail(person.getEmail(), "Подтверждение почты", code);
             //Отправляем код на почту
             session.setAttribute("code",code);
             session.setAttribute("time",System.currentTimeMillis());
